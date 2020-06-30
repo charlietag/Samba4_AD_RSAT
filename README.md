@@ -105,3 +105,56 @@
       zlib-devel
   ```
 
+## Build Samba4 from source
+* Download source code (latest)
+  * https://download.samba.org/pub/samba/samba-latest.tar.gz
+* configure
+
+	```bash
+	# ./configure
+	```
+
+* If the configure script exits without an error, you see the following output:
+
+	```bash
+	'configure' finished successfully (57.833s)`
+	```
+
+* make
+
+	```bash
+	# make
+	```
+
+* If the configure script exits without an error, you see the following output:
+
+	```bash
+  `'build' finished successfully (10m34.907s)`
+	```
+
+* make install
+
+	```bash
+	# make install
+	```
+
+* If the configure script exits without an error, you see the following output:
+
+	```bash
+	'install' finished successfully (3m57.107s)
+	```
+
+* Adding Samba Commands to the $PATH Variable
+
+  ```bash
+  # cat .bash_profile [.bashrc]
+  PATH=$PATH:$HOME/bin
+  PATH=/usr/local/samba/bin/:/usr/local/samba/sbin/:$PATH
+  export PATH
+	```
+
+* Viewing Built Options of an Existing Installation
+
+  ```bash
+  `smbd -b`
+  ```
