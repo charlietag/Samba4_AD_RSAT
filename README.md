@@ -1,4 +1,6 @@
-# CentOS 8 - Samba4 with Active Directory - Domain Controllers (AD-DC)
+# Samba4 - Active Directory (CentOS8)
+  Samba4 with Active Directory (CentOS8) - Domain Controllers (AD-DC)
+
 ## Prepare
 * Package Dependencies Required to Build Samba
 
