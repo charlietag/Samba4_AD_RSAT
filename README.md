@@ -1,1 +1,1 @@
-## Samba 4 with active domain - domain controller (AD - DC)
+## CentOS 8 - Samba4 with Active Directory - Domain Controllers (AD-DC)
