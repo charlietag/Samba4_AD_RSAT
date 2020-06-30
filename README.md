@@ -112,39 +112,39 @@
   * https://download.samba.org/pub/samba/samba-latest.tar.gz
 * configure
 
-	```bash
-	# ./configure
-	```
+  ```bash
+  # ./configure
+  ```
 
 * If the configure script exits without an error, you see the following output:
 
-	```bash
-	'configure' finished successfully (57.833s)`
-	```
+  ```bash
+  'configure' finished successfully (57.833s)`
+  ```
 
 * make
 
-	```bash
-	# make
-	```
+  ```bash
+  # make
+  ```
 
 * If the configure script exits without an error, you see the following output:
 
-	```bash
+  ```bash
   `'build' finished successfully (10m34.907s)`
-	```
+  ```
 
 * make install
 
-	```bash
-	# make install
-	```
+  ```bash
+  # make install
+  ```
 
 * If the configure script exits without an error, you see the following output:
 
-	```bash
-	'install' finished successfully (3m57.107s)
-	```
+  ```bash
+  'install' finished successfully (3m57.107s)
+  ```
 
 * Adding Samba Commands to the $PATH Variable
 
@@ -153,7 +153,7 @@
   PATH=$PATH:$HOME/bin
   PATH=/usr/local/samba/bin/:/usr/local/samba/sbin/:$PATH
   export PATH
-	```
+  ```
 
 * Viewing Built Options of an Existing Installation
 
