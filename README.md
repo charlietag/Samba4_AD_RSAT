@@ -378,6 +378,20 @@ Reference [Samba Wiki - Managing_the_Samba_AD_DC_Service_Using_Systemd](https://
   ```
 
 ### Useful commands
+* Running samba server for debug
+
+  ```bash
+  # systemctl stop samba-ad-dc
+  ```
+
+  ```bash
+  # samba -i
+  samba version 4.12.3 started.
+  Copyright Andrew Tridgell and the Samba Team 1992-2020
+  binary_smbd_main: samba: using 'prefork' process model
+  ...
+  ```
+
 * `# samba-tool domain level show`
 
   ```bash
