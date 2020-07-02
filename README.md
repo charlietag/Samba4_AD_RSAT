@@ -1,5 +1,7 @@
 # Samba4 - Active Directory (CentOS8)
-Samba4 with Active Directory (CentOS8) - Domain Controllers (AD-DC)
+[Samba4](https://wiki.samba.org/index.php/User_Documentation) with Active Directory (CentOS8) - Domain Controllers (AD-DC)
+
+> Windows Active Directory (Domain Controller) is just like [puppet](https://puppet.com/) in Microsoft world. Hope you enjoy it
 
 ## Before Start
 ### Who You Are
@@ -24,6 +26,11 @@ Samba4 with Active Directory (CentOS8) - Domain Controllers (AD-DC)
   * https://github.com/charlietag/os_preparation
 
 ## Installation
+
+**Reference** [Samba Wiki - Build_Samba_from_Source](https://wiki.samba.org/index.php/Build_Samba_from_Source)
+
+RedHat does not support AD as a DC (only as a ad member), so we build it from source code.
+
 ### Automatically
 ---
 #### Run script
@@ -36,114 +43,14 @@ Samba4 with Active Directory (CentOS8) - Domain Controllers (AD-DC)
 ### Manually
 ---
 #### Prepare
+**Reference** [Package_Dependencies_Required_to_Build_Samba#Verified_Package_Dependencies](https://wiki.samba.org/index.php/Package_Dependencies_Required_to_Build_Samba#Verified_Package_Dependencies)
+
 Packages Dependencies Required to Build Samba4
 
-```bash
-set -xueo pipefail
-
-yum update -y
-yum install -y dnf-plugins-core
-yum install -y epel-release
-yum config-manager --set-enabled PowerTools -y
-yum update -y
-
-yum install -y \
-    --setopt=install_weak_deps=False \
-    "@Development Tools" \
-    acl \
-    attr \
-    autoconf \
-    avahi-devel \
-    bind-utils \
-    binutils \
-    bison \
-    chrpath \
-    cups-devel \
-    curl \
-    dbus-devel \
-    docbook-dtds \
-    docbook-style-xsl \
-    flex \
-    gawk \
-    gcc \
-    gdb \
-    git \
-    glib2-devel \
-    glibc-common \
-    glibc-langpack-en \
-    glusterfs-api-devel \
-    glusterfs-devel \
-    gnutls-devel \
-    gpgme-devel \
-    gzip \
-    hostname \
-    htop \
-    jansson-devel \
-    keyutils-libs-devel \
-    krb5-devel \
-    krb5-server \
-    libacl-devel \
-    libarchive-devel \
-    libattr-devel \
-    libblkid-devel \
-    libbsd-devel \
-    libcap-devel \
-    libcephfs-devel \
-    libicu-devel \
-    libnsl2-devel \
-    libpcap-devel \
-    libtasn1-devel \
-    libtasn1-tools \
-    libtirpc-devel \
-    libunwind-devel \
-    libuuid-devel \
-    libxslt \
-    lmdb \
-    lmdb-devel \
-    make \
-    mingw64-gcc \
-    ncurses-devel \
-    openldap-devel \
-    pam-devel \
-    patch \
-    perl \
-    perl-Archive-Tar \
-    perl-ExtUtils-MakeMaker \
-    perl-Parse-Yapp \
-    perl-Test-Simple \
-    perl-generators \
-    perl-interpreter \
-    pkgconfig \
-    popt-devel \
-    procps-ng \
-    psmisc \
-    python3 \
-    python3-devel \
-    python3-dns \
-    python3-gpg \
-    python3-libsemanage \
-    python3-markdown \
-    python3-policycoreutils \
-    readline-devel \
-    redhat-lsb \
-    rng-tools \
-    rpcgen \
-    rpcsvc-proto-devel \
-    rsync \
-    sed \
-    sudo \
-    systemd-devel \
-    tar \
-    tree \
-    which \
-    xfsprogs-devel \
-    yum-utils \
-    zlib-devel
-```
+* Install dependent packages
+  * https://git.samba.org/?p=samba.git;a=blob_plain;f=bootstrap/generated-dists/centos8/bootstrap.sh;hb=v4-12-test
 
 #### Build Samba4 from source
-
-RedHat does not support AD as a DC (only as a ad member), so we build it from source code. (ref. [SambaWiki](https://wiki.samba.org/index.php/Build_Samba_from_Source))
 
 * Download source code (latest)
   
@@ -204,13 +111,81 @@ RedHat does not support AD as a DC (only as a ad member), so we build it from so
 
 
 ## Setup
-* 參考文件
-  * https://wiki.samba.org/index.php/Setting_up_Samba_as_an_Active_Directory_Domain_Controller
-* 開始設定
-  * 問答式設定
-    `samba-tool domain provision --use-rfc2307 --interactive`
-  * 自動化設定
-    * `# samba-tool domain provision --server-role=dc --use-rfc2307 --dns-backend=SAMBA_INTERNAL --realm=SAMDOM.EXAMPLE.COM --domain=SAMDOM --adminpass=Passw0rd`
+**Reference** [Samba Wiki - Setting_up_Samba_as_an_Active_Directory_Domain_Controller](https://wiki.samba.org/index.php/Setting_up_Samba_as_an_Active_Directory_Domain_Controller)
+
+### Provisioning Samba AD in Interactive Mode
+
+To provision a Samba AD interactively, run:
+
+  ```bash
+  samba-tool domain provision --use-rfc2307 --interactive
+  ```
+
+  ```bash
+  # samba-tool domain provision --use-rfc2307 --interactive
+  Realm [SAMDOM.EXAMPLE.COM]: SAMDOM.EXAMPLE.COM
+   Domain [SAMDOM]: SAMDOM
+   Server Role (dc, member, standalone) [dc]: dc
+   DNS backend (SAMBA_INTERNAL, BIND9_FLATFILE, BIND9_DLZ, NONE) [SAMBA_INTERNAL]: SAMBA_INTERNAL
+   DNS forwarder IP address (write 'none' to disable forwarding) [10.99.0.1]: 8.8.8.8
+  Administrator password: Passw0rd
+  Retype password: Passw0rd
+  Looking up IPv4 addresses
+  Looking up IPv6 addresses
+  No IPv6 address will be assigned
+  Setting up share.ldb
+  Setting up secrets.ldb
+  Setting up the registry
+  Setting up the privileges database
+  Setting up idmap db
+  Setting up SAM db
+  Setting up sam.ldb partitions and settings
+  Setting up sam.ldb rootDSE
+  Pre-loading the Samba 4 and AD schema
+  Adding DomainDN: DC=samdom,DC=example,DC=com
+  Adding configuration container
+  Setting up sam.ldb schema
+  Setting up sam.ldb configuration data
+  Setting up display specifiers
+  Modifying display specifiers
+  Adding users container
+  Modifying users container
+  Adding computers container
+  Modifying computers container
+  Setting up sam.ldb data
+  Setting up well known security principals
+  Setting up sam.ldb users and groups
+  Setting up self join
+  Adding DNS accounts
+  Creating CN=MicrosoftDNS,CN=System,DC=samdom,DC=example,DC=com
+  Creating DomainDnsZones and ForestDnsZones partitions
+  Populating DomainDnsZones and ForestDnsZones partitions
+  Setting up sam.ldb rootDSE marking as synchronized
+  Fixing provision GUIDs
+  A Kerberos configuration suitable for Samba 4 has been generated at /usr/local/samba/private/krb5.conf
+  Setting up fake yp server settings
+  Once the above files are installed, your Samba4 server will be ready to use
+  Server Role:           active directory domain controller
+  Hostname:              DC1
+  NetBIOS Domain:        SAMDOM
+  DNS Domain:            samdom.example.com
+  DOMAIN SID:            S-1-5-21-2614513918-2685075268-614796884
+  ```
+
+
+### Provisioning Samba AD in Non-interactive Mode
+For example, to provision a Samba AD non-interactively with the following settings:
+
+* Server role: dc
+* NIS extensions enabled
+* Internal DNS back end
+* Kerberos realm and AD DNS zone: samdom.example.com
+* NetBIOS domain name: SAMDOM
+* Domain administrator password: Passw0rd
+
+```bash
+# samba-tool domain provision --server-role=dc --use-rfc2307 --dns-backend=SAMBA_INTERNAL --realm=SAMDOM.EXAMPLE.COM --domain=SAMDOM --adminpass=Passw0rd
+```
 
 ---
 
@@ -228,94 +203,69 @@ NS Domain:            samdom.example.com
 OMAIN SID:            S-1-5-21-4151948209-2038588902-766361810
 ```
 
----
-
-* 後面，就都可以交給 Windows RSAT 設定處理了
-  * 樹系管理
-  * GPO
-  * Logon script
-  * DNS
-    * https://www.tecmint.com/manage-samba4-dns-group-policy-from-windows/
-* 記得通通要用 DC1 (ostname)
-
-
-
 ## Manage Active Directory - DC with RSAT
-* Logon script
-  * net_share.bat
-    ```
-net use * /delete /Y
-net use z: "\\192.168.1.73\shared_folder"
-```
-* [利用gpo自動部署網路磁碟機](https://www.azureunali.com/windows-ad-server%E5%88%A9%E7%94%A8gpo%E8%87%AA%E5%8B%95%E9%83%A8%E7%BD%B2%E7%B6%B2%E8%B7%AF%E7%A3%81%E7%A2%9F%E6%A9%9F/)
+**Reference** [Installing_RAST](https://wiki.samba.org/index.php/Installing_RSAT)
 
-* [利用gpo自動部署網路磁碟機_方法二](https://activedirectorypro.com/map-network-drives-with-group-policy/)
-  * The color of the triangle indicates the Action of the preference policy. If the Action is “`Update`”, you will see a `yellow` triangle. If the Action is “`Create`”, you will see a `green` triangle.
+Now your Samba is built, you can let **Windows RSAT** to deal with left configuration
 
----
+### Features
+* Active Directory Forest Management
+* GPO deploy
+  * [tutorial-gpo](https://www.advancedinstaller.com/user-guide/tutorial-gpo.html) (Shared by **Advanced Installer**)
+* DNS (Samba internal dns)
+  * [Manage Samba4 AD Domain Controller DNS and Group Policy from Windows](https://www.tecmint.com/manage-samba4-dns-group-policy-from-windows/) (shared by **Matei Cezar**)
 
-* 超完整說明
-  * https://www.advancedinstaller.com/user-guide/tutorial-gpo.html
-
-    ```
-Methods of deployment
-Group Policy supports two methods of deploying an MSI package:
-Assign software - A program can be assigned per-user or per-machine. If its assigned per-user, it will be installed when the user logs on. However, if its assigned per-machine then the program will be installed for all users when the machine starts.
-Publish software - A program can be published for one or more users. This program will be added to the Add or Remove Programs list and the user will be able to install it from there.
-```
-
-* 記得 AD 裡面的一切
-  * 使用這個
+### Configuration
+* In this sample : *Remember to use `DC1` (hostname) to connect*
+  * DO
     * `\\DC1\share_folder`
-  * 不要這樣使用
+  * DONT
     * `\\192.168.1.73\share_folder`
 
----
-* [完整說明 2](https://newhelptech.wordpress.com/2017/06/29/step-by-step-deploying-software-using-group-policy-in-windows-server-2016/)
-  * `gpupdate /force` (通常過一段時間 GPO 就會重新 update)
-    * Ref. [link](https://www.urtech.ca/2017/01/solved-long-take-group-policies-take-effect/)
-      * Unless you have changed the defaults, Group Policy is automatically updated `every 90 minutes` for both Computer and for User policies.  To stop all systems from flooding the servers and network, there is a random offset ranging from 0 to 30 minutes.  `This two hour window is the ‘background refresh’ time`.
+* GPO Deploy Sample (Map Network Drives)
+  * Logon script
+    * Reference
+      * [link](https://newhelptech.wordpress.com/2017/07/06/step-by-step-how-to-configuring-scripts-with-gpos-in-windows-server-2016/) (Shared by **newhelptech**)
+    * net_share.bat
 
-  ```
-10 – Now lets switch to our Windows 10 client PC, i do recommend that you run gpupdate /force in the client PC and then restart the client PC.
-```
-* https://www.youtube.com/watch?v=JRNCgvZs5v4
+      ```bash
+      net use * /delete /Y
+      net use z: "\\DC1\shared_folder"
+      ```
 
+  * RSAT GUI management
+    * Reference
+      * [link](https://activedirectorypro.com/map-network-drives-with-group-policy/) (Shared by **Sifad Hussain**)
+    * The color of the triangle indicates the Action of the preference policy.
+      * `yellow` triangle - the Action is “`Update`”
+      * `green`  triangle - If the Action is “`Create`”
 
+* GPO Deploy Sample (Deploy MSI software)
+  * Reference
+    * [link](https://www.advancedinstaller.com/user-guide/tutorial-gpo.html) (Shared by **Advanced Installer**)
+    * [link](https://newhelptech.wordpress.com/2017/06/29/step-by-step-deploying-software-using-group-policy-in-windows-server-2016/) (Shared by newhelptech)
+  * Methods of deployment - Group Policy supports two methods of deploying an MSI package:
+    * Assign(**assign mode**) software - A program can be assigned ***per-user*** or ***per-machine***
+      * per-user
+        * It will be installed when the user logs on. However
+      * Per-machine
+        * The program will be installed for all users when the machine starts (**reboot**).
+    * Publish(**publish mode**) software - A program can be published for one or more users.
+      * This program will be added to the ***Add or Remove Programs list*** and the user will be able to install it themselves from there.
 
+## Note
+* After GPO is set, client user may not take effect immediately
+  * Reference
+    * [link](https://www.urtech.ca/2017/01/solved-long-take-group-policies-take-effect/)
+  * Unless you have changed the defaults, Group Policy is automatically updated **`every 90 minutes`** for **both Computer and for User policies**.
+  * To stop all systems from flooding the servers and network, there is a random offset ranging from 0 to 30 minutes.  **`This two hour window is the ‘background refresh’ time`**.
 
-
-
-
-
-
-
-
-
-
-
-
-
+* Force client to update gpo
+  * Reference
+    * [YouTube Video](https://www.youtube.com/watch?v=JRNCgvZs5v4) (Shared by **Chris Walker**)
+  * `gpupdate /force`
 
 ## Reference
-* Wiki
-  * https://wiki.samba.org/index.php/User_Documentation
 
 * Video
-  * [YouTube](https://www.youtube.com/watch?v=FSDvz3_FFFc)
-* Blog
-  * 
-  * RedHat does not support AD as a DC (only as a ad member)
-    * compile from source
-      * [Build_Samba_from_Source](https://wiki.samba.org/index.php/Build_Samba_from_Source)
-      * [Package_Dependencies_Required_to_Build_Samba](https://wiki.samba.org/index.php/Package_Dependencies_Required_to_Build_Samba)
-
-
-
-* ClearOS
-
-  ---
-
-  * 其他好用的中文分享
-    * [2018/01/08/setting-samba-4-as-ad-domain-controller](https://william.pylabs.org/2018/01/08/setting-samba-4-as-ad-domain-controller/)
-    * [2018/01/14/create-secondary-ad-using-samba](https://william.pylabs.org/2018/01/14/create-secondary-ad-using-samba/)
+  * [YouTube Video](https://www.youtube.com/watch?v=FSDvz3_FFFc) (Shared by **Networking SS**)
