@@ -399,6 +399,15 @@ Reference [Samba Wiki - Managing_the_Samba_AD_DC_Service_Using_Systemd](https://
   SMB1 disabled -- no workgroup available
   ```
 
+* `# samba-tool user list`
+
+  ```bash
+  Guest
+  Administrator
+  charlie
+  krbtgt
+  ```
+
 * Check samba status
 
   ```bash
