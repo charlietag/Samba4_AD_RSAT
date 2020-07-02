@@ -430,6 +430,27 @@ Now your Samba is built, you can let **Windows RSAT** to deal with left configur
     * Publish(**publish mode**) software - A program can be published for one or more users.
       * This program will be added to the ***Add or Remove Programs list*** and the user will be able to install it themselves from there.
 
+## Backup & Recovery
+**Reference** [Samba Wiki - Back_up_and_Restoring_a_Samba_AD_DC](https://wiki.samba.org/index.php/Back_up_and_Restoring_a_Samba_AD_DC)
+
+**Reference** [PDF](screenshots/samba_backup_restore.pdf) (Shared by **Catalyst**)
+
+### Backup
+* Be sure to run backup on AD-DC
+
+  ```bash
+  # mkdir -p /opt/ad_dc_bak_files/
+  # samba-tool domain backup offline --targetdir=/opt/ad_dc_bak_files/
+  ```
+
+### Restore
+* Be sure to restore to a brand new AD-DC CentOS 8 server
+
+  ```bash
+  # samba-tool domain backup restore \
+      --backup-file=/opt/ad_dc_bak_files/samba-backup-2020-07-02T14-44-18.295073.tar.bz2
+  ```
+
 ## Note
 * After GPO is set, client user may not take effect immediately
   * Reference
