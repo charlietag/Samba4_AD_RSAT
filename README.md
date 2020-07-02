@@ -43,12 +43,58 @@ RedHat does not support AD as a DC (only as a ad member), so we build it from so
 ### Manually
 ---
 #### Prepare
-**Reference** [Package_Dependencies_Required_to_Build_Samba#Verified_Package_Dependencies](https://wiki.samba.org/index.php/Package_Dependencies_Required_to_Build_Samba#Verified_Package_Dependencies)
+**Reference** [Samba Wiki - Package_Dependencies_Required_to_Build_Samba#Verified_Package_Dependencies](https://wiki.samba.org/index.php/Package_Dependencies_Required_to_Build_Samba#Verified_Package_Dependencies)
 
 Packages Dependencies Required to Build Samba4
 
 * Install dependent packages
   * https://git.samba.org/?p=samba.git;a=blob_plain;f=bootstrap/generated-dists/centos8/bootstrap.sh;hb=v4-12-test
+
+#### Preparing the Installation
+**Reference** [Samba Wiki - Setting_up_Samba_as_an_Active_Directory_Domain_Controller](https://wiki.samba.org/index.php/Setting_up_Samba_as_an_Active_Directory_Domain_Controller)
+
+* Remove default Samba to avoid conflicts
+
+  ```bash
+  yum remove -y samba
+  ```
+
+* Verify that no Samba processes are running:
+
+  ```bash
+  ps ax | egrep "samba|smbd|nmbd|winbindd" | grep -v 'grep' | awk '{print $1}' | xargs -i bash -c "kill -9 {}"
+  ```
+
+* Verify that the `/etc/hosts` file on the DC correctly resolves the fully-qualified domain name (FQDN) and short host name to the LAN IP address of the DC. For example:
+
+  ```bash
+  127.0.0.1     localhost localhost.localdomain
+  192.168.1.73  DC1.samdom.example.com DC1
+  ```
+
+* Remove the existing `smb.conf` file.
+
+  ```bash
+  smbd -b | grep "CONFIGFILE" | awk '{print $2}' | xargs -i bash -c "mv {} {}_bak"
+  ```
+
+* Remove all Samba database files, such as `*.tdb` and `*.ldb` files.
+
+  ```bash
+  smbd -b | egrep "LOCKDIR|STATEDIR|CACHEDIR|PRIVATE_DIR" | awk '{print $2}' | xargs -i bash -c "rm -fr {}/*"
+  ```
+
+* Remove an existing `/etc/krb5.conf` file
+
+  ```bash
+  mv /etc/krb5.conf /etc/krb5.conf.bak
+  
+  # After Buld from source
+  cp /usr/local/samba/private/krb5.conf /etc/krb5.conf
+  ```
+
+
+
 
 #### Build Samba4 from source
 
@@ -64,7 +110,7 @@ Packages Dependencies Required to Build Samba4
   # ./configure
   ```
 
-  > if the configure script exits without an error, you see the following output:
+  * if the configure script exits without an error, you see the following output:
 
     ```bash
     'configure' finished successfully (57.833s)`
@@ -76,7 +122,7 @@ Packages Dependencies Required to Build Samba4
   # make
   ```
 
-  > If the configure script exits without an error, you see the following output:
+  * If the configure script exits without an error, you see the following output:
 
     ```bash
     `'build' finished successfully (10m34.907s)`
@@ -88,11 +134,11 @@ Packages Dependencies Required to Build Samba4
   # make install
   ```
 
-  > If the configure script exits without an error, you see the following output:
+  *  If the configure script exits without an error, you see the following output:
 
-    ```bash
-    'install' finished successfully (3m57.107s)
-    ```
+      ```bash
+      'install' finished successfully (3m57.107s)
+      ```
 
 * Adding Samba Commands to the $PATH Variable
 
@@ -182,14 +228,13 @@ For example, to provision a Samba AD non-interactively with the following settin
 * Kerberos realm and AD DNS zone: samdom.example.com
 * NetBIOS domain name: SAMDOM
 * Domain administrator password: Passw0rd
+* IP: 192.168.1.73
 
 ```bash
 # samba-tool domain provision --server-role=dc --use-rfc2307 --dns-backend=SAMBA_INTERNAL --realm=SAMDOM.EXAMPLE.COM --domain=SAMDOM --adminpass=Passw0rd
 ```
 
----
-
-```
+```bash
 Setting up sam.ldb rootDSE marking as synchronized
 Fixing provision GUIDs
 A Kerberos configuration suitable for Samba AD has been generated at /usr/local/samba/private/krb5.conf
@@ -203,10 +248,132 @@ NS Domain:            samdom.example.com
 OMAIN SID:            S-1-5-21-4151948209-2038588902-766361810
 ```
 
-## Manage Active Directory - DC with RSAT
-**Reference** [Installing_RAST](https://wiki.samba.org/index.php/Installing_RSAT)
+## CentOS 8 - Samba configurations
+* `/usr/local/samba/etc/smb.conf`
+
+  ```bash
+  # Global parameters
+  [global]
+          dns forwarder = 8.8.8.8
+          netbios name = DC1
+          realm = SAMDOM.EXAMPLE.COM
+          server role = active directory domain controller
+          workgroup = SAMDOM
+          idmap_ldb:use rfc2307 = yes
+
+  [sysvol]
+          path = /usr/local/samba/var/locks/sysvol
+          read only = No
+
+  [netlogon]
+          path = /usr/local/samba/var/locks/sysvol/samdom.example.com/scripts
+          read only = No
+  [shared_folder]
+          comment = Just Share
+          path = /SAMBA_SHARE
+          guest ok = no
+          browseable = yes
+          writable = yes
+  [shared_folder_A]
+          comment = Just Share
+          path = /SAMBA_SHARE_A
+          guest ok = no
+          browseable = yes
+          writable = yes
+  ```
+
+* `/etc/hosts`
+
+  ```bash
+  127.0.0.1     localhost localhost.localdomain
+  192.168.1.73  DC1.samdom.example.com DC1
+  ```
+
+* `/etc/resolv.conf`
+
+  ```bash
+  #nameserver 8.8.8.8
+  #nameserver 8.8.4.4
+  search samdom.example.com
+  nameserver 192.168.1.73
+  ```
+
+### Managing the Samba AD DC Service Using Systemd
+Reference [Samba Wiki - Managing_the_Samba_AD_DC_Service_Using_Systemd](https://wiki.samba.org/index.php/Managing_the_Samba_AD_DC_Service_Using_Systemd)
+
+* Disable default samba services `smbd` `winbindd`
+
+  ```bash
+  # systemctl mask smbd nmbd winbind
+  # systemctl disable smbd nmbd winbind
+  ```
+
+* Create the `/etc/systemd/system/samba-ad-dc.service` file with the following content:
+
+  ```bash
+  [Unit]
+  Description=Samba Active Directory Domain Controller
+  After=network.target remote-fs.target nss-lookup.target
+
+  [Service]
+  Type=forking
+  ExecStart=/usr/local/samba/sbin/samba -D
+  PIDFile=/usr/local/samba/var/run/samba.pid
+  ExecReload=/bin/kill -HUP $MAINPID
+
+  [Install]
+  WantedBy=multi-user.target
+  ```
+
+* Reload the systemd configuration:
+
+  ```bash
+  # systemctl daemon-reload
+  ```
+
+* Start samba4 service via systemd
+
+  ```bash
+  # systemctl enable samba-ad-dc
+  # systemctl start samba-ad-dc
+  ```
+
+### Useful commands
+* `# samba-tool domain level show`
+
+  ```bash
+  Domain and forest function level for domain 'DC=samdom,DC=example,DC=com'
+
+  Forest function level: (Windows) 2008 R2
+  Domain function level: (Windows) 2008 R2
+  Lowest function level of a DC: (Windows) 2008 R2
+  ```
+
+* `# smbclient -L localhost -U%`
+
+  ```bash
+          Sharename       Type      Comment
+          ---------       ----      -------
+          sysvol          Disk
+          netlogon        Disk
+          IPC$            IPC       IPC Service (Samba 4.12.3)
+  SMB1 disabled -- no workgroup available
+  ```
+
+* Check samba status
+
+  ```bash
+  ps axf | egrep "samba|smbd|winbindd"
+  ```
+
+## Manage Active Directory - DC with RSAT (Windows)
+**Reference** [Samba Wiki - Installing_RAST](https://wiki.samba.org/index.php/Installing_RSAT)
 
 Now your Samba is built, you can let **Windows RSAT** to deal with left configuration
+
+### After install RSAT
+* Make sure THE ADMIN WINDOWS(RSAT) is joined to the domain
+* Make sure THE DNS is pointed to the currect DNS SERVER (Mostly, the same as AD-DC server)
 
 ### Features
 * Active Directory Forest Management
@@ -215,7 +382,7 @@ Now your Samba is built, you can let **Windows RSAT** to deal with left configur
 * DNS (Samba internal dns)
   * [Manage Samba4 AD Domain Controller DNS and Group Policy from Windows](https://www.tecmint.com/manage-samba4-dns-group-policy-from-windows/) (shared by **Matei Cezar**)
 
-### Configuration
+### RSAT Management (Windows GUI)
 * In this sample : *Remember to use `DC1` (hostname) to connect*
   * DO
     * `\\DC1\share_folder`
