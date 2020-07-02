@@ -3,6 +3,16 @@
 
 > Windows Active Directory (Domain Controller) is just like [puppet](https://puppet.com/) in Microsoft world. Hope you enjoy it
 
+Deploy MSI software via Active DIrectory GPO:<br/>
+![AD_MSI_software](/screenshots/AD_MSI_software.png)
+
+Mapping network drive via Active DIrectory GPO:<br/>
+![map_net_drive_preference_script](/screenshots/map_net_drive_preference_script.png)
+
+DNS management via RSAT:<br/>
+![AD_DNS_manager](/screenshots/AD_DNS_manager.png)
+
+
 ## Before Start
 ### Who You Are
 * Small business owner
@@ -431,6 +441,15 @@ Now your Samba is built, you can let **Windows RSAT** to deal with left configur
   * Reference
     * [YouTube Video](https://www.youtube.com/watch?v=JRNCgvZs5v4) (Shared by **Chris Walker**)
   * `gpupdate /force`
+
+* AD-DC config screenshot (CentOS 8)
+![ad_DC_config](/screenshots/ad_DC_config.png)
+
+* Setting up logon script
+![method_logon_script](/screenshots/method_logon_script.png)
+
+* Method to activate gpo
+![method_activate_gpo](/screenshots/method_activate_gpo.png)
 
 ## Reference
 
