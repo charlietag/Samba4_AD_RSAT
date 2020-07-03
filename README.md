@@ -1,6 +1,6 @@
 Table of Contents
 =================
-- [Samba4 - Active Directory (CentOS8)](#samba4---active-directory--centos8-)
+- [Samba4 - Active Directory (CentOS 8)](#samba4---active-directory--centos-8-)
   * [Before Start](#before-start)
     + [Who You Are](#who-you-are)
     + [OS requirement](#os-requirement)
@@ -27,8 +27,8 @@ Table of Contents
   * [Note](#note)
   * [Reference](#reference)
 
-# Samba4 - Active Directory (CentOS8)
-[Samba4](https://wiki.samba.org/index.php/User_Documentation) with Active Directory (CentOS8) - Domain Controllers (AD-DC)
+# Samba4 - Active Directory (CentOS 8)
+[Samba4](https://wiki.samba.org/index.php/User_Documentation) with Active Directory (CentOS 8) - Domain Controllers (AD-DC)
 
 > Windows Active Directory (Domain Controller) is just like [puppet](https://puppet.com/) in Microsoft world. Hope you enjoy it
 
@@ -523,6 +523,9 @@ Now your Samba is built, you can let **Windows RSAT** to deal with left configur
 
 * Method to activate gpo
 ![method_activate_gpo](/screenshots/method_activate_gpo.png)
+
+* Upgrade Samba4
+  * Just do the whole installation above again (It would be better to install Samba4 on a clean server)
 
 ## Reference
 
