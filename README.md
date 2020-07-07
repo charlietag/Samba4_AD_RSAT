@@ -330,17 +330,17 @@ For example, to provision a Samba AD non-interactively with the following settin
 ```
 
 ```bash
-Setting up sam.ldb rootDSE marking as synchronized
-Fixing provision GUIDs
-A Kerberos configuration suitable for Samba AD has been generated at /usr/local/samba/private/krb5.conf
-Merge the contents of this file with your system krb5.conf or replace it with this one. Do not create a symlink!
-Setting up fake yp server settings
-nce the above files are installed, your Samba AD server will be ready to use
-erver Role:           active directory domain controller
-ostname:              DC1
-etBIOS Domain:        SAMDOM
-NS Domain:            samdom.example.com
-OMAIN SID:            S-1-5-21-4151948209-2038588902-766361810
+ Setting up sam.ldb rootDSE marking as synchronized
+ Fixing provision GUIDs
+ A Kerberos configuration suitable for Samba AD has been generated at /usr/local/samba/private/krb5.conf
+ Merge the contents of this file with your system krb5.conf or replace it with this one. Do not create a symlink!
+ Setting up fake yp server settings
+Once the above files are installed, your Samba AD server will be ready to use
+Server Role:           active directory domain controller
+Hostname:              DC1
+NetBIOS Domain:        SAMDOM
+DNS Domain:            samdom.example.com
+DOMAIN SID:            S-1-5-21-4151948209-2038588902-766361810
 ```
 
 ## CentOS 8 - Samba configurations
