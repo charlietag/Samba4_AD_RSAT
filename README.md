@@ -72,10 +72,63 @@ RedHat does not support AD as a DC (only as a ad member), so we build it from so
 
 ### Automatically
 ---
-#### Run script
+#### Easy Installation
+
+----------------------------------------------------------------
+* Before installation
+
+  ```bash
+  dnf clean all
+  dnf install -y git
+  git clone https://github.com/charlietag/Samba4_AD_RSAT.git
+  ```
+
+* Make sure config files exists , you can copy from sample to **modify**.
+
+  ```bash
+  cd databag
+  ls |xargs -i bash -c "cp {} \$(echo {}|sed 's/\.sample//g')"
+  ```
+
+* Mostly used configuration :
+
+  ```bash
+  databag/
+  ├── F_10_PKG_01_samba_04_provision_ad.cfg
+  ```
+
+* Verify **ONLY modified** config files (with syntax color).
+
+  ```bash
+  cd databag
+
+  echo ; \
+  ls *.cfg | xargs -i bash -c " \
+  echo -e '\e[0;33m'; \
+  echo ---------------------------; \
+  echo {}; \
+  echo ---------------------------; \
+  echo -n -e '\033[00m' ; \
+  echo -n -e '\e[0;32m'; \
+  cat {} | grep -v 'plugin_load_databag.sh' | grep -vE '^\s*#' |sed '/^\s*$/d'; \
+  echo -e '\033[00m' ; \
+  echo "
+  ```
+
+* Start installation
+
+  ```bash
+  ./start -a
+  ```
+
+* On your windows
+  1. Point your dns to Samba AD-DC
+  1. Join domain (Samba AD-DC)
+  1. Start to manage your AD DC ([RSAT](#manage-active-directory---dc-with-rsat-windows))
+
+--------------------------------------------------------------
 
 ```bash
-# git clone https://github.com/charlietag/Samba4_AD_RSAT.git
 # ./install.sh
 ```
 
@@ -527,8 +580,9 @@ Reference [Samba Wiki - Managing_the_Samba_AD_DC_Service_Using_Systemd](https://
 Now your Samba is built, you can let **Windows RSAT** to deal with left configuration
 
 ### After install RSAT
-* Make sure THE ADMIN WINDOWS(RSAT) is joined to the domain
-* Make sure THE DNS is pointed to the currect DNS SERVER (Mostly, the same as AD-DC server)
+
+1. Make sure THE DNS is pointed to the currect DNS SERVER (Mostly, the same as AD-DC server)
+1. Make sure THE ADMIN WINDOWS(RSAT) is joined to the domain
 
 ### Features
 * Active Directory Forest Management
