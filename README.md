@@ -402,6 +402,44 @@ Reference [Samba Wiki - Managing_the_Samba_AD_DC_Service_Using_Systemd](https://
   Lowest function level of a DC: (Windows) 2008 R2
   ```
 
+* `# samba-tool fsmo show`
+
+  ```bash
+  SchemaMasterRole owner: CN=NTDS Settings,CN=DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=samdom,DC=example,DC=com
+  InfrastructureMasterRole owner: CN=NTDS Settings,CN=DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=samdom,DC=example,DC=com
+  RidAllocationMasterRole owner: CN=NTDS Settings,CN=DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=samdom,DC=example,DC=com
+  PdcEmulationMasterRole owner: CN=NTDS Settings,CN=DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=samdom,DC=example,DC=com
+  DomainNamingMasterRole owner: CN=NTDS Settings,CN=DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=samdom,DC=example,DC=com
+  DomainDnsZonesMasterRole owner: CN=NTDS Settings,CN=DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=samdom,DC=example,DC=com
+  ForestDnsZonesMasterRole owner: CN=NTDS Settings,CN=DC1,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=samdom,DC=example,DC=com
+  ```
+
+* `# samba-tool drs showrepl`
+
+  ```bash
+  Default-First-Site-Name\DC1
+  DSA Options: 0x00000001
+  DSA object GUID: d39c6176-a45b-41f0-a84b-43fd50b54613
+  DSA invocationId: 50869469-3cbf-4e25-9bfc-cb6fb5641fb5
+
+  ==== INBOUND NEIGHBORS ====
+
+  ==== OUTBOUND NEIGHBORS ====
+
+  ==== KCC CONNECTION OBJECTS ====
+
+  ```
+
+* `# smbclient //localhost/netlogon -UAdministrator -c 'ls'`
+
+  ```bash
+  Enter SAMDOM\Administrator's password:
+    .                                   D        0  Fri Jun 19 14:23:11 2020
+    ..                                  D        0  Sat Jun 20 09:16:15 2020
+
+                  17811456 blocks of size 1024. 12197992 blocks available
+  ```
+
 * `# smbclient -L localhost -U%`
 
   ```bash
@@ -426,6 +464,61 @@ Reference [Samba Wiki - Managing_the_Samba_AD_DC_Service_Using_Systemd](https://
 
   ```bash
   ps axf | egrep "samba|smbd|winbindd"
+  ```
+
+* Check samba config
+
+  ```bash
+  # testparm
+  Load smb config files from /usr/local/samba/etc/smb.conf
+  Loaded services file OK.
+  Server role: ROLE_ACTIVE_DIRECTORY_DC
+
+  Press enter to see a dump of your service definitions
+
+  # Global parameters
+  [global]
+          dns forwarder = 8.8.8.8
+          passdb backend = samba_dsdb
+          realm = SAMDOM.EXAMPLE.COM
+          server role = active directory domain controller
+          workgroup = SAMDOM
+          rpc_server:tcpip = no
+          rpc_daemon:spoolssd = embedded
+          rpc_server:spoolss = embedded
+          rpc_server:winreg = embedded
+          rpc_server:ntsvcs = embedded
+          rpc_server:eventlog = embedded
+          rpc_server:srvsvc = embedded
+          rpc_server:svcctl = embedded
+          rpc_server:default = external
+          winbindd:use external pipes = true
+          idmap_ldb:use rfc2307 = yes
+          idmap config * : backend = tdb
+          map archive = No
+          vfs objects = dfs_samba4 acl_xattr
+
+
+  [sysvol]
+          path = /usr/local/samba/var/locks/sysvol
+          read only = No
+
+
+  [netlogon]
+          path = /usr/local/samba/var/locks/sysvol/samdom.example.com/scripts
+          read only = No
+
+
+  [shared_folder]
+          comment = Just Share
+          path = /SAMBA_SHARE
+          read only = No
+
+
+  [shared_folder_A]
+          comment = Just Share
+          path = /SAMBA_SHARE_A
+          read only = No
   ```
 
 ## Manage Active Directory - DC with RSAT (Windows)
