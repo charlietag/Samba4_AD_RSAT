@@ -4,9 +4,10 @@
 #-----------------------------------------------------------------------------------------
 cd $TMP
 
-#wget https://download.samba.org/pub/samba/samba-latest.tar.gz  -O - | tar -xz
+wget https://download.samba.org/pub/samba/samba-latest.tar.gz  -O - | tar -xz
 
-#cd samba-*
+local samba_src_path="$(readlink -m samba-*)"
+cd ${samba_src_path}
 
 check_install_status() {
   local this_rc=$1
@@ -46,4 +47,8 @@ sed -i '/\/usr\/local\/samba\/bin\//d' /root/.bash_profile
 
 echo 'PATH=/usr/local/samba/bin/:/usr/local/samba/sbin/:$PATH' >> /root/.bash_profile
 echo "export PATH" >> /root/.bash_profile
+
+# Safe Delete Samba source code
+cd $TMP
+SAFE_DELETE "${samba_src_path}"
 
