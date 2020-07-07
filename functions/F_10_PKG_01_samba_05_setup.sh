@@ -14,7 +14,7 @@
 local samba_config_file="$(smbd -b | grep "CONFIGFILE" | awk '{print $2}')"
 if [[ -n "${samba_config_file}" ]]; then
   sed -re '/dns\s+forwarder/d' -i ${samba_config_file}
-  sed -e "/^\[global\]/a \ \ \ \ \ \ \ \ dns forwarder = ${samba_dns_forwarder}" -i  ${samba_config_file}
+  sed -e "/^\[global\]/a \ \ dns forwarder = ${samba_dns_forwarder}" -i  ${samba_config_file}
 
 
   sed -re '/include/d' -i ${samba_config_file}
