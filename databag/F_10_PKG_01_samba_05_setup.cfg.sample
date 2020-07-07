@@ -1,0 +1,9 @@
+# ------------------------------------------------
+# Samba config
+# ------------------------------------------------
+# For samba internal dns
+local samba_dns_forwarder="8.8.8.8"
+
+
+# Share folder path
+local samba_share_folder="/opt/samba/shared"
