@@ -1,0 +1,11 @@
+# ------------------------------------------------
+# DO NOT MODIFY HERE
+# ------------------------------------------------
+. ${PLUGINS}/plugin_load_databag.sh F_10_PKG_01_samba_04_provision_ad.cfg
+. ${PLUGINS}/plugin_load_databag.sh F_10_PKG_01_samba_05_setup_01_resolv.cfg
+
+# ------------------------------------------------
+# resolve dns IP
+# ------------------------------------------------
+#local host_ip="192.168.1.73"
+local host_ip="$(hostname -I | grep -Eo '(([0-9]{1,3})\.){3}([0-9]{1,3}){1}' | head -n 1)"
