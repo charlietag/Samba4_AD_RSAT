@@ -1,0 +1,14 @@
+# ------------------------------------------------
+# Samba AD config
+# ------------------------------------------------
+local samba_server_role="dc"
+local samba_dns_backend="SAMBA_INTERNAL"
+
+#local samba_realm="SAMDOM.EXAMPLE.COM"
+#local samba_domain="SAMDOM"
+
+local samba_realm="$(hostname)"
+local samba_domain="$(hostname -s)"
+
+
+local samba_admin_password="Passw0rd"

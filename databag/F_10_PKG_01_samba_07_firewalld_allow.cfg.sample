@@ -1,0 +1,38 @@
+# ------------------------------------------------
+# Firewalld Status Setup
+# ------------------------------------------------
+# Default set firewalld to on / off
+#local firewalld_enabled="disable"
+local firewalld_enabled="auto"    # [ enable | disable | auto ]
+                                  # enable , enable firewalld
+                                  # disable , disable firewalld
+                                  # auto , detect current status from systemd
+
+# ------------------------------------------------
+# Firewalld Allowed Ports
+# ------------------------------------------------
+# This will only be used when firewalld is set to "enable" above.
+# Firewall allowed port for samba4 ad dc
+# Ref. https://wiki.samba.org/index.php/Samba_AD_DC_Port_Usage
+local firewalld_allow_ports=(
+  53/tcp
+  53/udp
+  88/tcp
+  88/udp
+  123/udp
+  135/tcp
+  137/udp
+  138/udp
+  139/tcp
+  389/tcp
+  389/udp
+  445/tcp
+  464/tcp
+  464/udp
+  636/tcp
+  3268/tcp
+  3269/tcp
+  49152-65535/tcp
+  2222/tcp #Customized SSH Port
+  80/tcp   #Nginx
+)
