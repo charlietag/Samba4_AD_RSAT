@@ -6,7 +6,9 @@ rpm --quiet -q samba && dnf remove -y samba
 
 # Make sure that no Samba processes are running
 echo "--- Stop samba daemon if exists ---"
-ps ax | egrep "samba|smbd|nmbd|winbindd" | grep -v 'grep' | awk '{print $1}' | xargs -i bash -c "kill -9 {}"
+
+# Avoid to kill this script itself --->  grep -Ev "grep|${FUNCNAME[1]}"
+ps ax | egrep "samba|smbd|nmbd|winbindd" |  grep -Ev "grep|${FUNCNAME[1]}" | awk '{print $1}' | xargs -i bash -c "kill -9 {}"
 
 # Remove the existing smb.conf file
 echo "--- Remove samba config if exists ---"
