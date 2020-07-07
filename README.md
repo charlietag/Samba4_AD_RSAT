@@ -72,9 +72,7 @@ RedHat does not support AD as a DC (only as a ad member), so we build it from so
 
 ### Automatically
 ---
-#### Easy Installation
-
-----------------------------------------------------------------
+#### Step 1 - config
 * Before installation
 
   ```bash
@@ -115,22 +113,18 @@ RedHat does not support AD as a DC (only as a ad member), so we build it from so
   echo "
   ```
 
+#### Step 2 - install
 * Start installation
 
   ```bash
   ./start -a
   ```
 
+#### Done - manage AD DC using RSAT
 * On your windows
   1. Point your dns to Samba AD-DC
   1. Join domain (Samba AD-DC)
   1. Start to manage your AD DC ([RSAT](#manage-active-directory---dc-with-rsat-windows))
-
---------------------------------------------------------------
-
-```bash
-# ./install.sh
-```
 
 ### Manually
 ---
