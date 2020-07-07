@@ -26,6 +26,9 @@ if [[ -n "${samba_config_file}" ]]; then
 
     if [[ ! -d "${samba_share_folder}" ]]; then
       mkdir -p ${samba_share_folder}
+    fi
+
+    if [[ -d "${samba_share_folder}" ]]; then
       chmod -R 777 ${samba_share_folder}
     fi
     
