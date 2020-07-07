@@ -2,7 +2,7 @@
 # DO NOT MODIFY HERE
 # ------------------------------------------------
 . ${PLUGINS}/plugin_load_databag.sh F_10_PKG_01_samba_04_provision_ad.cfg
-. ${PLUGINS}/plugin_load_databag.sh F_10_PKG_01_samba_05_setup_01_smb.cfg
+. ${PLUGINS}/plugin_load_databag.sh F_10_PKG_01_samba_05_setup_smb.cfg
 # ------------------------------------------------
 # resolve dns IP
 # ------------------------------------------------
