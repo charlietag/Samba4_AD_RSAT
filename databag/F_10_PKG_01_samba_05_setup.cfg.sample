@@ -6,4 +6,11 @@ local samba_dns_forwarder="8.8.8.8"
 
 
 # Share folder path
+
+# --- Disable ---
+# Leave it empty to disable share folder function
+#local samba_share_folder=""
+
+# --- Enable ---
+# Specify folder path to enable shared folder
 local samba_share_folder="/opt/samba/shared"
