@@ -94,6 +94,7 @@ RedHat does not support AD as a DC (only as a ad member), so we build it from so
 
   ```bash
   databag/
+  ├── F_10_PKG_01_samba_00_prepare_01_hostname.cfg
   ├── F_10_PKG_01_samba_04_provision_ad.cfg
   ```
 
@@ -316,6 +317,12 @@ For example, to provision a Samba AD non-interactively with the following settin
 * Kerberos realm and AD DNS zone: samdom.example.com
 * NetBIOS domain name: SAMDOM
 * Domain administrator password: Passw0rd
+* Server Name: dc1
+* HOSTNAME
+  * FQDN:       dc1.samdom.example.com
+  * Realm:      samdom.example.com
+  * Domain:     samdom
+  * hostname:   dc1
 * IP: 192.168.1.73
 
 ```bash
