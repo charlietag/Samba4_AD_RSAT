@@ -68,4 +68,4 @@ echo "Before go on, maybe you could try command below to verify your samba-ad-dc
 echo "    # . ~/.bash_profile (if need)"
 echo ""
 echo "    # smbclient //localhost/netlogon -UAdministrator -c 'ls'"
-echo "    (Default Admin Password: ${samba_admin_password})"
+echo "                                (Default Admin Password: ${samba_admin_password})"
