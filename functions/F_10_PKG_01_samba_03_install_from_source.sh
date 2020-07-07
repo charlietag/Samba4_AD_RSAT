@@ -48,9 +48,6 @@ sed -i '/\/usr\/local\/samba\/bin\//d' /root/.bash_profile
 echo 'PATH=/usr/local/samba/bin/:/usr/local/samba/sbin/:$PATH' >> /root/.bash_profile
 echo "export PATH" >> /root/.bash_profile
 
-# source PATH to activate Samba command
-. /root/.bash_profile
-
 # Safe Delete Samba source code
 cd $TMP
 SAFE_DELETE "${samba_src_path}"
