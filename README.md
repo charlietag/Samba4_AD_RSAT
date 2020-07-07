@@ -575,8 +575,10 @@ Now your Samba is built, you can let **Windows RSAT** to deal with left configur
 
 ### After install RSAT
 
-1. Make sure THE DNS is pointed to the currect DNS SERVER (Mostly, the same as AD-DC server)
-1. Make sure THE ADMIN WINDOWS(RSAT) is joined to the domain
+* Make sure
+  1. THE DNS is pointed to the currect DNS SERVER (Mostly, the same as AD-DC server)
+  1. THE ADMIN WINDOWS(RSAT) is joined to the domain
+  1. Firewalld is setup correctly on Samba4 server (Ref. [SambaWiki-Samba_AD_DC_Port_Usage](https://wiki.samba.org/index.php/Samba_AD_DC_Port_Usage))
 
 ### Features
 * Active Directory Forest Management
