@@ -27,6 +27,7 @@ Table of Contents
     - [Backup](#backup)
     - [Restore](#restore)
   - [Note](#note)
+  - [Other goodies](#other-goodies)
   - [Reference](#reference)
 
 # Samba4 - Active Directory (CentOS 8)
@@ -50,7 +51,7 @@ DNS management via RSAT:<br/>
   * You might want a quick , easy to use, easy to maintain solution
   * You can try **NAS** to have both ***shared folder*** with ***AD*** **out of box**
     * https://www.synology.com/dsm/feature/active_directory
-  
+
 * IT engineer but **lazy** (or *productive* :D)
   * You might want to **build your own server** without any command line
   * You can try **ClearOS (community)**
@@ -177,7 +178,7 @@ Packages Dependencies Required to Build Samba4
 
   ```bash
   mv /etc/krb5.conf /etc/krb5.conf.bak
-  
+
   # After Buld from source
   cp /usr/local/samba/private/krb5.conf /etc/krb5.conf
   ```
@@ -188,11 +189,11 @@ Packages Dependencies Required to Build Samba4
 #### Build Samba4 from source
 
 * Download source code (latest)
-  
+
   ```bash
   wget https://download.samba.org/pub/samba/samba-latest.tar.gz
   ```
-  
+
 * configure
 
   ```bash
@@ -678,6 +679,10 @@ Now your Samba is built, you can let **Windows RSAT** to deal with left configur
 
 * Upgrade Samba4
   * Just do the whole installation above again (It would be better to install Samba4 on a clean server)
+
+## Other goodies
+
+- [FreeIPA](https://www.freeipa.org/page/Main_Page) - FreeIPA is an integrated security information management solution combining Linux (Fedora), 389 Directory Server, MIT Kerberos, NTP, DNS, Dogtag (Certificate System). It consists of a web interface and command-line administration tools.
 
 ## Reference
 
