@@ -682,7 +682,7 @@ Now your Samba is built, you can let **Windows RSAT** to deal with left configur
 
 ## Other goodies
 
-- [FreeIPA](https://www.freeipa.org/page/Main_Page) - FreeIPA is an integrated security information management solution combining Linux (Fedora), 389 Directory Server, MIT Kerberos, NTP, DNS, Dogtag (Certificate System). It consists of a web interface and command-line administration tools.
+- [FreeIPA](https://www.freeipa.org) - FreeIPA is an integrated security information management solution combining Linux (Fedora), 389 Directory Server, MIT Kerberos, NTP, DNS, Dogtag (Certificate System). It consists of a web interface and command-line administration tools.
 
 ## Reference
 
