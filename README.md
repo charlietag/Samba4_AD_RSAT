@@ -88,7 +88,7 @@ RedHat does not support AD as a DC (only as a ad member), so we build it from so
 
   ```bash
   cd databag
-  ls |xargs -i bash -c "cp {} \$(echo {}|sed 's/\.sample//g')"
+  ls |xargs -I{} bash -c "cp {} \$(echo {}|sed 's/\.sample//g')"
   ```
 
 * Mostly used configuration :
@@ -105,7 +105,7 @@ RedHat does not support AD as a DC (only as a ad member), so we build it from so
   cd databag
 
   echo ; \
-  ls *.cfg | xargs -i bash -c " \
+  ls *.cfg | xargs -I{} bash -c " \
   echo -e '\e[0;33m'; \
   echo ---------------------------; \
   echo {}; \
@@ -152,7 +152,7 @@ Packages Dependencies Required to Build Samba4
 * Verify that no Samba processes are running:
 
   ```bash
-  ps ax | egrep "samba|smbd|nmbd|winbindd" | grep -v 'grep' | awk '{print $1}' | xargs -i bash -c "kill -9 {}"
+  ps ax | egrep "samba|smbd|nmbd|winbindd" | grep -v 'grep' | awk '{print $1}' | xargs -I{} bash -c "kill -9 {}"
   ```
 
 * Verify that the `/etc/hosts` file on the DC correctly resolves the fully-qualified domain name (FQDN) and short host name to the LAN IP address of the DC. For example:
@@ -165,13 +165,13 @@ Packages Dependencies Required to Build Samba4
 * Remove the existing `smb.conf` file.
 
   ```bash
-  smbd -b | grep "CONFIGFILE" | awk '{print $2}' | xargs -i bash -c "mv {} {}_bak"
+  smbd -b | grep "CONFIGFILE" | awk '{print $2}' | xargs -I{} bash -c "mv {} {}_bak"
   ```
 
 * Remove all Samba database files, such as `*.tdb` and `*.ldb` files.
 
   ```bash
-  smbd -b | egrep "LOCKDIR|STATEDIR|CACHEDIR|PRIVATE_DIR" | awk '{print $2}' | xargs -i bash -c "rm -fr {}/*"
+  smbd -b | egrep "LOCKDIR|STATEDIR|CACHEDIR|PRIVATE_DIR" | awk '{print $2}' | xargs -I{} bash -c "rm -fr {}/*"
   ```
 
 * Remove an existing `/etc/krb5.conf` file

@@ -15,15 +15,15 @@ rpm --quiet -q samba && dnf remove -y samba
 echo "--- Stop samba daemon if exists ---"
 
 # Avoid to kill this script itself --->  grep -Ev "grep|${FUNCNAME[1]}"
-ps ax | egrep "samba|smbd|nmbd|winbindd" |  grep -Ev "grep|${FUNCNAME[1]}" | awk '{print $1}' | xargs -i bash -c "kill -9 {}"
+ps ax | egrep "samba|smbd|nmbd|winbindd" |  grep -Ev "grep|${FUNCNAME[1]}" | awk '{print $1}' | xargs -I{} bash -c "kill -9 {}"
 
 # Remove the existing smb.conf file
 echo "--- Remove samba config if exists ---"
-[[ -n "${smbd_command}" ]] && smbd -b | grep "CONFIGFILE" | awk '{print $2}' | xargs -i bash -c "\cp -a --backup=t {} {}_bak; rm -f {}"
+[[ -n "${smbd_command}" ]] && smbd -b | grep "CONFIGFILE" | awk '{print $2}' | xargs -I{} bash -c "\cp -a --backup=t {} {}_bak; rm -f {}"
 
 # Remove all Samba database files, such as *.tdb and *.ldb files.
 echo "--- Remove samba database files if exists ---"
-[[ -n "${smbd_command}" ]] && smbd -b | egrep "LOCKDIR|STATEDIR|CACHEDIR|PRIVATE_DIR" | awk '{print $2}' | xargs -i bash -c "rm -fr {}/*"
+[[ -n "${smbd_command}" ]] && smbd -b | egrep "LOCKDIR|STATEDIR|CACHEDIR|PRIVATE_DIR" | awk '{print $2}' | xargs -I{} bash -c "rm -fr {}/*"
 
 # Remove an existing /etc/krb5.conf file
 echo "--- Remove /etc/krb5.conf files if exists ---"
